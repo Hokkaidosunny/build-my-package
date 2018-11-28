@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsc --watch"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,14 @@
   "bugs": {
     "url": "https://github.com/Hokkaidosunny/build-my-package/issues"
   },
-  "homepage": "https://github.com/Hokkaidosunny/build-my-package#readme"
+  "homepage": "https://github.com/Hokkaidosunny/build-my-package#readme",
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@types/node": "^10.12.10",
+    "@types/webpack": "^4.4.19",
+    "tslint": "^5.11.0",
+    "tslint-config-prettier": "^1.14.0",
+    "typescript": "^3.1.6",
+    "webpack": "^4.26.1"
+  }
 }

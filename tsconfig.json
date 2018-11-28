@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "strictNullChecks": true,
+    "moduleResolution": "node",
+    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noImplicitAny": true,
+    "target": "es6",
+    "lib": ["dom", "es7"],
+    "module": "commonjs",
+    "outDir": "lib",
+    "declaration": true
+  },
+  "exclude": ["node_modules"]
+}
