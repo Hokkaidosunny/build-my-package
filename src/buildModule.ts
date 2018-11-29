@@ -12,7 +12,7 @@ interface Option {
 function buildModule({ entry, outputPath, commonjs }: Option) {
   const babelrc = createBabelConfig({ commonjs }) as any
 
-  const src = path.join(entry, '**/*.(js,jsx)')
+  const src = path.join(entry, '**/*.{js,jsx}')
 
   return gulp
     .src(src)
