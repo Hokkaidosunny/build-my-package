@@ -1,28 +1,41 @@
 import path from 'path'
 import webpack, { Configuration } from 'webpack'
+import nodeExternals from 'webpack-node-externals'
+import createBabelConfig from './createBabelConfig'
 
 const ctx = process.cwd()
 
 const outputPath = path.join(ctx, './dist')
 
-function getWebpackConfig(cusConfig: Configuration): Configuration {
-  const { entry } = cusConfig
+const babelrc = createBabelConfig({ commonjs: true })
 
-  return {
-    entry: path.join(ctx, entry as string),
+function getWebpackConfig(cusConfig: Configuration): Configuration {
+  const { entry, output, mode } = cusConfig
+
+  const config: Configuration = {
+    entry,
+    mode: mode || 'production',
     output: {
       path: outputPath,
-      libraryTarget: 'umd'
+      libraryTarget: 'umd',
+      ...output
     },
     module: {
       rules: [
         {
           test: /\.(js|jsx)$/,
-          loader: 'babel-loader'
+          loader: require.resolve('babel-loader'),
+          options: {
+            babelrc: false,
+            ...babelrc
+          }
         }
       ]
-    }
+    },
+    externals: [nodeExternals()]
   }
+
+  return config
 }
 
 function buildUMD(cusConfig: Configuration) {
