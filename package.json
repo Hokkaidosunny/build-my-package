@@ -1,11 +1,11 @@
 {
   "name": "build-my-package",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
     "build": "rm -rf lib && tsc -w",
-    "release": "npm run build && standard-version && npm publish --registry=https://registry.npmjs.org/"
+    "release": "rm -rf lib && tsc && standard-version && npm publish --registry=https://registry.npmjs.org/"
   },
   "repository": {
     "type": "git",
