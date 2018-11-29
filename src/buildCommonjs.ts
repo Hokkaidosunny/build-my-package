@@ -1,23 +1,17 @@
-import gulp from 'gulp'
-import babel from 'gulp-babel'
+import buildModule from './buildModule'
 import path from 'path'
-import createBabelConfig from './createBabelConfig'
 
 const ctx = process.cwd()
 
-const outputPath = path.join(ctx, './lib')
-
 function buildCommonjs(cusConfig: any) {
   const { entry } = cusConfig
+  const outputPath = path.join(ctx, './lib')
 
-  const babelrc = createBabelConfig({ commonjs: true }) as any
-
-  const src = path.join(entry, '**/*.js')
-
-  return gulp
-    .src(src)
-    .pipe(babel(babelrc))
-    .pipe(gulp.dest(outputPath))
+  buildModule({
+    entry,
+    outputPath,
+    commonjs: true
+  })
 }
 
 export default buildCommonjs

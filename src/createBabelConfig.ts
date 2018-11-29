@@ -1,4 +1,8 @@
-function createBabelConfig({ commonjs }: { commonjs: boolean }) {
+interface Option {
+  commonjs: boolean
+}
+
+function createBabelConfig({ commonjs }: Option) {
   return {
     presets: [
       [
@@ -10,7 +14,15 @@ function createBabelConfig({ commonjs }: { commonjs: boolean }) {
       ],
       require.resolve('@babel/preset-react')
     ],
-    plugins: [require.resolve('@babel/plugin-proposal-class-properties')]
+    plugins: [
+      [
+        require.resolve('@babel/plugin-transform-runtime'),
+        {
+          useESModules: !commonjs
+        }
+      ],
+      require.resolve('@babel/plugin-proposal-class-properties')
+    ]
   }
 }
 
