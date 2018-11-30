@@ -1,16 +1,16 @@
-import buildModule from './buildModule'
+import buildModule from './lib/buildModule'
 import path from 'path'
+import { CusConfig } from './buildUMD'
 
 const ctx = process.cwd()
 
-function buildCommonjs(cusConfig: any) {
-  const { entry } = cusConfig
-  const outputPath = path.join(ctx, './es')
+function buildCommonjs(cusConfig: CusConfig) {
+  const outputPath = cusConfig.outputPath || path.join(ctx, './es')
 
   buildModule({
-    entry,
     outputPath,
-    commonjs: false
+    commonjs: false,
+    ...cusConfig
   })
 }
 

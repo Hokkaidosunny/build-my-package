@@ -1,8 +1,8 @@
-interface Option {
+export interface BabelConfigOption {
   commonjs: boolean
 }
 
-function createBabelConfig({ commonjs }: Option) {
+function createBabelConfig({ commonjs }: BabelConfigOption) {
   return {
     presets: [
       [

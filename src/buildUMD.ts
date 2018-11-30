@@ -1,16 +1,25 @@
 import path from 'path'
 import webpack, { Configuration } from 'webpack'
 import nodeExternals from 'webpack-node-externals'
-import createBabelConfig from './createBabelConfig'
+import createBabelConfig from './config/createBabelConfig'
+
+export interface CusConfig {
+  entry: string
+  outputPath?: string
+  filename?: string
+  mode: 'development' | 'production' | 'none' | undefined
+  language: string
+  tsconfig?: any
+}
 
 const ctx = process.cwd()
 
-const outputPath = path.join(ctx, './dist')
+function getWebpackConfig(cusConfig: CusConfig): Configuration {
+  const { entry, mode, filename } = cusConfig
 
-const babelrc = createBabelConfig({ commonjs: true })
+  const outputPath = cusConfig.outputPath || path.join(ctx, './dist')
 
-function getWebpackConfig(cusConfig: Configuration): Configuration {
-  const { entry, output, mode } = cusConfig
+  const babelrc = createBabelConfig({ commonjs: true })
 
   const config: Configuration = {
     entry,
@@ -18,7 +27,7 @@ function getWebpackConfig(cusConfig: Configuration): Configuration {
     output: {
       path: outputPath,
       libraryTarget: 'umd',
-      ...output
+      filename
     },
     module: {
       rules: [
@@ -38,7 +47,7 @@ function getWebpackConfig(cusConfig: Configuration): Configuration {
   return config
 }
 
-function buildUMD(cusConfig: Configuration) {
+function buildUMD(cusConfig: CusConfig) {
   const webpackConfig = getWebpackConfig(cusConfig)
 
   const compiler = webpack(webpackConfig)
