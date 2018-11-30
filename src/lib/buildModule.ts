@@ -10,28 +10,38 @@ interface Option extends CusConfig {
   commonjs: boolean
 }
 
+function buildTS(option: Option) {
+  const { entry, outputPath, commonjs, tsconfig } = option
+
+  const tsConfig = createTSconfig({ commonjs, tsconfig })
+  const src = path.join(entry, '**/*.{ts,tsx}')
+
+  return gulp
+    .src(src)
+    .pipe(tsc(tsConfig))
+    .pipe(gulp.dest(outputPath as string))
+}
+
+function buildJS(option: Option) {
+  const { entry, outputPath, commonjs } = option
+
+  const babelrc = createBabelConfig({ commonjs }) as any
+  const src = path.join(entry, '**/*.{js,jsx}')
+
+  return gulp
+    .src(src)
+    .pipe(babel(babelrc))
+    .pipe(gulp.dest(outputPath as string))
+}
+
 function buildModule(option: Option) {
-  const { entry, outputPath, commonjs, language, tsconfig } = option
+  const { language } = option
 
   if (language === 'typescript') {
-    const tsConfig = createTSconfig({ commonjs, tsconfig })
-    const src = path.join(entry, '**/*.{ts,tsx}')
-
-    return gulp
-      .src(src)
-      .pipe(tsc(tsConfig))
-      .pipe(gulp.dest(outputPath as string))
+    return buildTS(option)
   }
 
-  if (language === 'js') {
-    const babelrc = createBabelConfig({ commonjs }) as any
-    const src = path.join(entry, '**/*.{js,jsx}')
-
-    return gulp
-      .src(src)
-      .pipe(babel(babelrc))
-      .pipe(gulp.dest(outputPath as string))
-  }
+  return buildJS(option)
 }
 
 export default buildModule
