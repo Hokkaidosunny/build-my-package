@@ -1,5 +1,13 @@
 # build-my-package
 
+Help you to build 3 types of module
+
+## Install
+
+```shell
+yarn add -D build-my-package
+```
+
 ## Usage
 
 ```javascript
