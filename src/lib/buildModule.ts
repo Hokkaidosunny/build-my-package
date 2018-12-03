@@ -10,6 +10,19 @@ interface Option extends CusConfig {
   commonjs: boolean
 }
 
+function buildModule(option: Option) {
+  const { language } = option
+
+  if (language === 'typescript') {
+    return buildTS(option)
+  }
+
+  return buildJS(option)
+}
+
+export default buildModule
+
+// build ts
 function buildTS(option: Option) {
   const { entry, outputPath, commonjs, tsconfig } = option
 
@@ -22,6 +35,7 @@ function buildTS(option: Option) {
     .pipe(gulp.dest(outputPath as string))
 }
 
+// build js
 function buildJS(option: Option) {
   const { entry, outputPath, commonjs } = option
 
@@ -33,15 +47,3 @@ function buildJS(option: Option) {
     .pipe(babel(babelrc))
     .pipe(gulp.dest(outputPath as string))
 }
-
-function buildModule(option: Option) {
-  const { language } = option
-
-  if (language === 'typescript') {
-    return buildTS(option)
-  }
-
-  return buildJS(option)
-}
-
-export default buildModule

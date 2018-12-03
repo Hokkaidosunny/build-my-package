@@ -5,19 +5,24 @@ import { CheckerPlugin } from 'awesome-typescript-loader'
 import nodeExternals from 'webpack-node-externals'
 import createBabelConfig from './config/createBabelConfig'
 import createTSConfig from './config/createTSConfig'
+import { Settings } from 'gulp-typescript'
 
 export interface CusConfig {
   entry: string
   outputPath?: string
   filename?: string
   mode: 'development' | 'production' | 'none' | undefined
-  language: string
-  tsconfig?: any
+  language: 'typescript' | 'javascript' | undefined
+  tsconfig?: Settings
 }
 
 const ctx = process.cwd()
 const tsconfigPath = path.join(__dirname, './config/tsconfig.json')
 
+/**
+ * build umd module
+ * webpack can handle both ts and js
+ */
 function buildUMD(cusConfig: CusConfig) {
   const webpackConfig = getWebpackConfig(cusConfig)
 
@@ -43,7 +48,7 @@ function buildUMD(cusConfig: CusConfig) {
 
 export default buildUMD
 
-// create tsconfig
+// create tsconfig json file
 function createTSConfigJson(cusConfig: CusConfig, outputPath: string) {
   deleteTSConfigJson()
 
@@ -60,7 +65,7 @@ function createTSConfigJson(cusConfig: CusConfig, outputPath: string) {
   fs.writeFileSync(tsconfigPath, JSON.stringify(json), 'utf8')
 }
 
-// delete tsconfig
+// delete tsconfig json file
 function deleteTSConfigJson() {
   if (fs.existsSync(tsconfigPath)) {
     fs.unlinkSync(tsconfigPath)
@@ -88,7 +93,7 @@ function getWebpackConfig(cusConfig: CusConfig): Configuration {
       extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
     plugins: [new CheckerPlugin()],
-    externals: [nodeExternals()],
+    externals: [nodeExternals()], // exclude everything in node_modules
     module: {
       rules: [
         {
