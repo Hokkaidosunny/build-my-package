@@ -9,8 +9,8 @@ function createTSConfig({ commonjs, tsconfig }: TSConfigOption) {
     allowSyntheticDefaultImports: true,
     experimentalDecorators: true,
     jsx: 'react',
+    lib: ['dom', 'es7'],
     esModuleInterop: true,
-    target: 'es6',
     declaration: true,
     keyofStringsOnly: true,
     ...tsconfig
