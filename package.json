@@ -25,6 +25,7 @@
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.1.5",
+    "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.4",
     "gulp": "^3.9.1",
     "gulp-babel": "^8.0.0",

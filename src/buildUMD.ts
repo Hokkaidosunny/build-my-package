@@ -1,7 +1,10 @@
 import path from 'path'
+import fs from 'fs'
 import webpack, { Configuration } from 'webpack'
+import { CheckerPlugin } from 'awesome-typescript-loader'
 import nodeExternals from 'webpack-node-externals'
 import createBabelConfig from './config/createBabelConfig'
+import createTSConfig from './config/createTSConfig'
 
 export interface CusConfig {
   entry: string
@@ -13,39 +16,7 @@ export interface CusConfig {
 }
 
 const ctx = process.cwd()
-
-function getWebpackConfig(cusConfig: CusConfig): Configuration {
-  const { entry, mode, filename } = cusConfig
-
-  const outputPath = cusConfig.outputPath || path.join(ctx, './dist')
-
-  const babelrc = createBabelConfig({ commonjs: true })
-
-  const config: Configuration = {
-    entry,
-    mode: mode || 'production',
-    output: {
-      path: outputPath,
-      libraryTarget: 'umd',
-      filename
-    },
-    module: {
-      rules: [
-        {
-          test: /\.(js|jsx)$/,
-          loader: require.resolve('babel-loader'),
-          options: {
-            babelrc: false,
-            ...babelrc
-          }
-        }
-      ]
-    },
-    externals: [nodeExternals()]
-  }
-
-  return config
-}
+const tsconfigPath = path.join(__dirname, './config/tsconfig.json')
 
 function buildUMD(cusConfig: CusConfig) {
   const webpackConfig = getWebpackConfig(cusConfig)
@@ -71,3 +42,73 @@ function buildUMD(cusConfig: CusConfig) {
 }
 
 export default buildUMD
+
+// create tsconfig
+function createTSConfigJson(cusConfig: CusConfig, outputPath: string) {
+  deleteTSConfigJson()
+
+  const json = {
+    compilerOptions: createTSConfig({
+      commonjs: true,
+      tsconfig: {
+        ...cusConfig.tsconfig,
+        outDir: outputPath // make declaration file in right place
+      }
+    })
+  }
+
+  fs.writeFileSync(tsconfigPath, JSON.stringify(json), 'utf8')
+}
+
+// delete tsconfig
+function deleteTSConfigJson() {
+  if (fs.existsSync(tsconfigPath)) {
+    fs.unlinkSync(tsconfigPath)
+  }
+}
+
+function getWebpackConfig(cusConfig: CusConfig): Configuration {
+  const { entry, mode, filename } = cusConfig
+
+  const outputPath = cusConfig.outputPath || path.join(ctx, './dist')
+
+  // create configs
+  const babelrc = createBabelConfig({ commonjs: true })
+  createTSConfigJson(cusConfig, outputPath)
+
+  const config: Configuration = {
+    entry,
+    mode: mode || 'production',
+    output: {
+      path: outputPath,
+      libraryTarget: 'umd',
+      filename
+    },
+    resolve: {
+      extensions: ['.ts', '.tsx', '.js', '.jsx']
+    },
+    plugins: [new CheckerPlugin()],
+    externals: [nodeExternals()],
+    module: {
+      rules: [
+        {
+          test: /\.jsx?$/,
+          loader: require.resolve('babel-loader'),
+          options: {
+            babelrc: false,
+            ...babelrc
+          }
+        },
+        {
+          test: /\.tsx?$/,
+          loader: require.resolve('awesome-typescript-loader'),
+          options: {
+            configFileName: tsconfigPath
+          }
+        }
+      ]
+    }
+  }
+
+  return config
+}

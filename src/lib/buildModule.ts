@@ -2,7 +2,7 @@ import gulp from 'gulp'
 import babel from 'gulp-babel'
 import path from 'path'
 import createBabelConfig from '../config/createBabelConfig'
-import createTSconfig from '../config/createTSconfig'
+import createTSConfig from '../config/createTSConfig'
 import tsc from 'gulp-typescript'
 import { CusConfig } from '../buildUMD'
 
@@ -13,7 +13,7 @@ interface Option extends CusConfig {
 function buildTS(option: Option) {
   const { entry, outputPath, commonjs, tsconfig } = option
 
-  const tsConfig = createTSconfig({ commonjs, tsconfig })
+  const tsConfig = createTSConfig({ commonjs, tsconfig })
   const src = path.join(entry, '**/*.{ts,tsx}')
 
   return gulp
