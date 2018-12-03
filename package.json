@@ -1,6 +1,6 @@
 {
   "name": "build-my-package",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -24,13 +24,14 @@
     "@babel/plugin-transform-runtime": "^7.1.0",
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.1.5",
     "babel-loader": "^8.0.4",
     "gulp": "^3.9.1",
     "gulp-babel": "^8.0.0",
     "gulp-typescript": "^5.0.0-alpha.3",
+    "typescript": "^3.1.6",
     "webpack": "^4.26.1",
-    "webpack-node-externals": "^1.7.2",
-    "typescript": "^3.1.6"
+    "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
     "@types/gulp": "^4.0.5",
