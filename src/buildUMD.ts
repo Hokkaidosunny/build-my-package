@@ -54,7 +54,18 @@ function buildUMD(cusConfig: CusConfig) {
 
   compiler.run((err: Error, stats: any) => {
     if (err) {
-      console.warn(err, stats)
+      console.error(err.stack || err)
+      return
+    }
+
+    const info = stats.toJson()
+
+    if (stats.hasErrors()) {
+      console.error(info.errors)
+    }
+
+    if (stats.hasWarnings()) {
+      console.warn(info.warnings)
     }
   })
 }
