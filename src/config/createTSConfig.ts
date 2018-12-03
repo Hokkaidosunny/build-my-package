@@ -13,6 +13,7 @@ function createTSConfig({ commonjs, tsconfig }: TSConfigOption) {
     esModuleInterop: true,
     declaration: true,
     keyofStringsOnly: true,
+    moduleResolution: 'node',
     ...tsconfig
   }
 }
