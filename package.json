@@ -1,7 +1,7 @@
 {
   "name": "build-my-package",
   "version": "0.0.6",
-  "description": "",
+  "description": "build package tool",
   "main": "lib/index.js",
   "scripts": {
     "build": "rm -rf lib && tsc -w",
@@ -11,7 +11,14 @@
     "type": "git",
     "url": "git+https://github.com/Hokkaidosunny/build-my-package.git"
   },
-  "keywords": [],
+  "keywords": [
+    "build",
+    "module",
+    "webpack",
+    "umd",
+    "commonjs",
+    "es6"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {

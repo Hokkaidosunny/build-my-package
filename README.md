@@ -1,6 +1,6 @@
 # build-my-package
 
-Help you to build 3 types of module
+Help you to build 3 types of module, support js and ts.
 
 ## Install
 
@@ -27,20 +27,39 @@ buildES({
 
 buildCommonjs({
   entry: path.join(__dirname, './src')
-  // ts support
-  // language: 'typescript'
 })
 ```
 
-## CusConfig
+## Options
 
-```javascript
-interface CusConfig {
-  entry: string
-  outputPath?: string
-  filename?: string
-  mode: 'development' | 'production' | 'none' | undefined
-  language: string
-  tsconfig?: any
-}
+### entry
+
+absolute path of entry file/dir
+
+### outputPath
+
+absolute path of output dir
+
+```shell
+# outputpath
+├── dist  # umd module
+├── es    # es module
+├── lib   # commonjs module
 ```
+
+### mode
+
+webpack mode
+
+### filename
+
+filename of umd module file
+
+### language
+
+'typescript' | 'javascript' | undefined
+
+### tsconfig
+
+gulp-typescript settings;
+will be used only when language = 'typescript';
