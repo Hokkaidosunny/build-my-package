@@ -18,7 +18,6 @@ export interface CusConfig {
 }
 
 const ctx = process.cwd()
-const tsconfigPath = path.join(__dirname, './config/tsconfig.json')
 
 /**
  * build umd module
@@ -49,38 +48,21 @@ function buildUMD(cusConfig: CusConfig) {
 
 export default buildUMD
 
-// create tsconfig json file
-function createTSConfigJson(cusConfig: CusConfig, outputPath: string) {
-  deleteTSConfigJson()
-
-  const json = {
-    compilerOptions: createTSConfig({
-      commonjs: true,
-      tsconfig: {
-        ...cusConfig.tsconfig,
-        outDir: outputPath // make declaration file in right place
-      }
-    })
-  }
-
-  fs.writeFileSync(tsconfigPath, JSON.stringify(json), 'utf8')
-}
-
-// delete tsconfig json file
-function deleteTSConfigJson() {
-  if (fs.existsSync(tsconfigPath)) {
-    fs.unlinkSync(tsconfigPath)
-  }
-}
-
 function getWebpackConfig(cusConfig: CusConfig): Configuration {
-  const { entry, mode, filename, library } = cusConfig
+  const { entry, mode, filename, library, tsconfig } = cusConfig
 
   const outputPath = cusConfig.outputPath || path.join(ctx, './dist')
 
   // create configs
-  const babelrc = createBabelConfig({ commonjs: true })
-  createTSConfigJson(cusConfig, outputPath)
+  const babelrConfig = createBabelConfig({ commonjs: true })
+
+  const tsCompilerOptions = createTSConfig({
+    commonjs: true,
+    tsconfig: {
+      ...tsconfig,
+      outDir: outputPath // make declaration file in right place
+    }
+  })
 
   const config: Configuration = {
     entry,
@@ -103,14 +85,14 @@ function getWebpackConfig(cusConfig: CusConfig): Configuration {
           loader: require.resolve('babel-loader'),
           options: {
             babelrc: false,
-            ...babelrc
+            ...babelrConfig
           }
         },
         {
           test: /\.tsx?$/,
           loader: require.resolve('awesome-typescript-loader'),
           options: {
-            configFileName: tsconfigPath
+            compilerOptions: tsCompilerOptions
           }
         }
       ]
