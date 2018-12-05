@@ -14,6 +14,7 @@ export interface CusConfig {
   mode: 'development' | 'production' | 'none' | undefined
   language: 'typescript' | 'javascript' | undefined
   tsconfig?: Settings
+  library?: string | string[] | undefined
 }
 
 const ctx = process.cwd()
@@ -73,7 +74,7 @@ function deleteTSConfigJson() {
 }
 
 function getWebpackConfig(cusConfig: CusConfig): Configuration {
-  const { entry, mode, filename } = cusConfig
+  const { entry, mode, filename, library } = cusConfig
 
   const outputPath = cusConfig.outputPath || path.join(ctx, './dist')
 
@@ -87,7 +88,8 @@ function getWebpackConfig(cusConfig: CusConfig): Configuration {
     output: {
       path: outputPath,
       libraryTarget: 'umd',
-      filename
+      filename,
+      library
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx']
