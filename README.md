@@ -1,6 +1,6 @@
 # build-my-package
 
-Help you to build 3 types of module, support js and ts.
+Help you to build 3 types(UMD, Commonjs, ES Module) of module, support js and ts.
 
 ## Install
 
@@ -34,11 +34,11 @@ buildCommonjs({
 
 ### entry
 
-absolute path of entry file/dir
+- absolute path of entry file/dir
 
 ### outputPath
 
-absolute path of output dir
+- absolute path of output dir
 
 ```shell
 # outputpath
@@ -49,17 +49,23 @@ absolute path of output dir
 
 ### mode
 
-webpack mode
+- webpack mode
 
 ### filename
 
-filename of umd module file
+- webpack output.filename
+- filename of umd module file
+
+### library
+
+- webpack output.library
+- library name of umd module file
 
 ### language
 
-'typescript' | 'javascript' | undefined
+- 'typescript' | 'javascript' | undefined
 
 ### tsconfig
 
-gulp-typescript settings;
-will be used only when language = 'typescript';
+- gulp-typescript settings
+- will be used only when `language = 'typescript'`
