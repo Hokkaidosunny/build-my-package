@@ -1,8 +1,9 @@
 export interface BabelConfigOption {
   commonjs: boolean
+  runtime?: boolean
 }
 
-function createBabelConfig({ commonjs }: BabelConfigOption) {
+function createBabelConfig({ commonjs, runtime }: BabelConfigOption) {
   return {
     presets: [
       [
@@ -15,7 +16,7 @@ function createBabelConfig({ commonjs }: BabelConfigOption) {
       require.resolve('@babel/preset-react')
     ],
     plugins: [
-      [
+      runtime && [
         require.resolve('@babel/plugin-transform-runtime'),
         {
           useESModules: !commonjs

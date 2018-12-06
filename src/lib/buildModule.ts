@@ -39,7 +39,7 @@ function buildTS(option: Option) {
 function buildJS(option: Option) {
   const { entry, outputPath, commonjs } = option
 
-  const babelrc = createBabelConfig({ commonjs }) as any
+  const babelrc = createBabelConfig({ commonjs, runtime: true }) as any
   const src = path.join(entry, '**/*.{js,jsx}')
 
   return gulp
