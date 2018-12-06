@@ -4,6 +4,19 @@ export interface BabelConfigOption {
 }
 
 function createBabelConfig({ commonjs, runtime }: BabelConfigOption) {
+  const plugins: any[] = [
+    require.resolve('@babel/plugin-proposal-class-properties')
+  ]
+
+  if (runtime) {
+    plugins.push([
+      require.resolve('@babel/plugin-transform-runtime'),
+      {
+        useESModules: !commonjs
+      }
+    ])
+  }
+
   return {
     presets: [
       [
@@ -15,15 +28,7 @@ function createBabelConfig({ commonjs, runtime }: BabelConfigOption) {
       ],
       require.resolve('@babel/preset-react')
     ],
-    plugins: [
-      runtime && [
-        require.resolve('@babel/plugin-transform-runtime'),
-        {
-          useESModules: !commonjs
-        }
-      ],
-      require.resolve('@babel/plugin-proposal-class-properties')
-    ]
+    plugins
   }
 }
 
