@@ -70,6 +70,7 @@ function getWebpackConfig(cusConfig: CusConfig): Configuration {
     output: {
       path: outputPath,
       libraryTarget: 'umd',
+      libraryExport: 'default',
       filename,
       library
     },
