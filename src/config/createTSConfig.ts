@@ -14,6 +14,7 @@ function createTSConfig({ commonjs, tsconfig }: TSConfigOption) {
     declaration: true,
     keyofStringsOnly: true,
     moduleResolution: 'node',
+    importHelpers: true,
     ...tsconfig
   }
 }

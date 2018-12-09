@@ -37,6 +37,7 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^8.0.0",
     "gulp-typescript": "^5.0.0-alpha.3",
+    "tslib": "^1.9.3",
     "typescript": "^3.1.6",
     "webpack": "^4.26.1",
     "webpack-node-externals": "^1.7.2"

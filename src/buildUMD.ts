@@ -1,6 +1,5 @@
 import path from 'path'
-import fs from 'fs'
-import webpack, { Configuration } from 'webpack'
+import webpack, { Configuration, ExternalsElement } from 'webpack'
 import { CheckerPlugin } from 'awesome-typescript-loader'
 import nodeExternals from 'webpack-node-externals'
 import createBabelConfig from './config/createBabelConfig'
@@ -15,6 +14,7 @@ export interface CusConfig {
   language: 'typescript' | 'javascript' | undefined
   tsconfig?: Settings
   library?: string | string[] | undefined
+  externals?: ExternalsElement | ExternalsElement[]
 }
 
 const ctx = process.cwd()
@@ -49,19 +49,17 @@ function buildUMD(cusConfig: CusConfig) {
 export default buildUMD
 
 function getWebpackConfig(cusConfig: CusConfig): Configuration {
-  const { entry, mode, filename, library, tsconfig } = cusConfig
+  const { entry, mode, filename, library, tsconfig, externals } = cusConfig
 
   const outputPath = cusConfig.outputPath || path.join(ctx, './dist')
 
-  // create configs
+  // create babel config
   const babelrConfig = createBabelConfig({ commonjs: true })
 
+  // create ts config
   const tsCompilerOptions = createTSConfig({
     commonjs: true,
-    tsconfig: {
-      ...tsconfig,
-      outDir: outputPath // make declaration file in right place
-    }
+    tsconfig
   })
 
   const config: Configuration = {
@@ -78,7 +76,7 @@ function getWebpackConfig(cusConfig: CusConfig): Configuration {
       extensions: ['.ts', '.tsx', '.js', '.jsx']
     },
     plugins: [new CheckerPlugin()],
-    externals: [nodeExternals()], // exclude everything in node_modules
+    externals: externals ? externals : [nodeExternals()], // exclude everything in node_modules
     module: {
       rules: [
         {
