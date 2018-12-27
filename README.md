@@ -69,3 +69,13 @@ buildCommonjs({
 
 - gulp-typescript settings
 - will be used only when `language = 'typescript'`
+
+## Roadmap
+
+- [x] support cjs
+- [x] support es module
+- [x] support umd
+- [x] support ts
+- [ ] watch file change
+- [ ] custom output dir
+- [ ] cli interface
