@@ -76,6 +76,8 @@ buildCommonjs({
 - [x] support es module
 - [x] support umd
 - [x] support ts
-- [ ] watch file change
+- [x] custom ts config
+- [ ] custom babel config
 - [ ] custom output dir
+- [ ] watch file change
 - [ ] cli interface
