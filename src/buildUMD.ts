@@ -4,18 +4,7 @@ import { CheckerPlugin } from 'awesome-typescript-loader'
 import nodeExternals from 'webpack-node-externals'
 import createBabelConfig from './config/createBabelConfig'
 import createTSConfig from './config/createTSConfig'
-import { Settings } from 'gulp-typescript'
-
-export interface CusConfig {
-  entry: string
-  outputPath?: string
-  filename?: string
-  mode: 'development' | 'production' | 'none' | undefined
-  language: 'typescript' | 'javascript' | undefined
-  tsconfig?: Settings
-  library?: string | string[] | undefined
-  externals?: ExternalsElement | ExternalsElement[]
-}
+import { CusConfig } from '.'
 
 const ctx = process.cwd()
 
@@ -49,7 +38,15 @@ function buildUMD(cusConfig: CusConfig) {
 export default buildUMD
 
 function getWebpackConfig(cusConfig: CusConfig): Configuration {
-  const { entry, mode, filename, library, tsconfig, externals } = cusConfig
+  const {
+    entry,
+    mode,
+    filename,
+    library,
+    tsconfig,
+    externals,
+    watch
+  } = cusConfig
 
   const outputPath = cusConfig.outputPath || path.join(ctx, './dist')
 
@@ -64,6 +61,7 @@ function getWebpackConfig(cusConfig: CusConfig): Configuration {
 
   const config: Configuration = {
     entry,
+    watch,
     mode: mode || 'production',
     output: {
       path: outputPath,

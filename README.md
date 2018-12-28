@@ -11,22 +11,25 @@ yarn add -D build-my-package
 ## Usage
 
 ```javascript
-const buidMyPackage = require('build-my-package')
+const { buildUMD, buildES, buildCommonjs } = require('build-my-package')
 const path = require('path')
-
-const { buildUMD, buildES, buildCommonjs } = buidMyPackage
 
 buildUMD({
   entry: path.join(__dirname, './src/onEnter.js'),
   filename: 'onEnter.js'
 })
 
-buildES({
+buildCommonjs({
   entry: path.join(__dirname, './src')
 })
 
-buildCommonjs({
-  entry: path.join(__dirname, './src')
+// or
+const bmp = require('build-my-package')
+
+bmp({
+  entry: path.join(__dirname, './src/onEnter.js'),
+  filename: 'onEnter.js',
+  module: 'umd'
 })
 ```
 
@@ -36,39 +39,50 @@ buildCommonjs({
 
 - absolute path of entry file/dir
 
-### outputPath
+### module?
+
+- 'es module' | 'commonjs' | 'umd'
+
+### outputPath?
 
 - absolute path of output dir
 
 ```shell
-# outputpath
+# default outputpath
 ├── dist  # umd module
 ├── es    # es module
 ├── lib   # commonjs module
 ```
 
-### mode
+### mode?
 
+- default 'production'
 - webpack mode
 
-### filename
+### filename?
 
 - webpack output.filename
 - filename of umd module file
 
-### library
+### library?
 
 - webpack output.library
 - library name of umd module file
 
-### language
+### language?
 
+- default 'javascript'
 - 'typescript' | 'javascript' | undefined
 
-### tsconfig
+### tsconfig?
 
 - gulp-typescript settings
 - will be used only when `language = 'typescript'`
+
+### watch?
+
+- default false
+- webpack watch
 
 ## Roadmap
 
@@ -77,7 +91,6 @@ buildCommonjs({
 - [x] support umd
 - [x] support ts
 - [x] custom ts config
+- [x] support watch
 - [ ] custom babel config
-- [ ] custom output dir
-- [ ] watch file change
 - [ ] cli interface

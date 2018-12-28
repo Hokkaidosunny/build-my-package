@@ -4,7 +4,7 @@ import path from 'path'
 import createBabelConfig from '../config/createBabelConfig'
 import createTSConfig from '../config/createTSConfig'
 import tsc from 'gulp-typescript'
-import { CusConfig } from '../buildUMD'
+import { CusConfig } from '..'
 
 interface Option extends CusConfig {
   commonjs: boolean

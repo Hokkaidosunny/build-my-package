@@ -24,7 +24,8 @@
     "no-bitwise": false,
     "array-type": false,
     "member-ordering": false,
-    "no-console": false
+    "no-console": false,
+    "only-arrow-functions": false
   },
   "linterOptions": {
     "exclude": ["node_modules/**"]
