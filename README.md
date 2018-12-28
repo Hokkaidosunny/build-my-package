@@ -10,6 +10,18 @@ yarn add -D build-my-package
 
 ## Usage
 
+## cli
+
+```shell
+bmp src -l typescript -m umd -w
+
+# help
+bmp -h
+
+```
+
+## node
+
 ```javascript
 const { buildUMD, buildES, buildCommonjs } = require('build-my-package')
 const path = require('path')
@@ -83,5 +95,5 @@ buildCommonjs({
 - [x] support ts
 - [x] custom ts config
 - [x] support watch
+- [x] support cli
 - [ ] custom babel config
-- [ ] cli interface

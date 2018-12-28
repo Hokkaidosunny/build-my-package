@@ -7,6 +7,9 @@
     "build": "rm -rf lib && tsc -w",
     "release": "standard-version && npm publish --registry=https://registry.npmjs.org/"
   },
+  "bin": {
+    "bmp": "./lib/bin.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Hokkaidosunny/build-my-package.git"
@@ -35,6 +38,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.4",
     "chokidar": "^2.0.4",
+    "getopts": "^2.2.3",
     "gulp": "^3.9.1",
     "gulp-babel": "^8.0.0",
     "gulp-typescript": "^5.0.0-alpha.3",

@@ -18,3 +18,28 @@ export interface CusConfig {
 }
 
 export { buildCommonjs, buildES, buildUMD }
+
+export function bmp(config: CusConfig) {
+  const { module } = config
+
+  let compiler: any
+  switch (module) {
+    case 'es module':
+      compiler = buildES
+      break
+
+    case 'commonjs':
+      compiler = buildCommonjs
+      break
+
+    case 'umd':
+      compiler = buildUMD
+      break
+    default:
+      break
+  }
+
+  if (compiler) {
+    compiler(config)
+  }
+}
