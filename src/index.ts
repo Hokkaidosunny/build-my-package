@@ -18,31 +18,3 @@ export interface CusConfig {
 }
 
 export { buildCommonjs, buildES, buildUMD }
-
-export default (config: CusConfig) => {
-  const { module } = config
-
-  let compiler: any
-  switch (module) {
-    case 'es module':
-      compiler = buildES
-      break
-
-    case 'commonjs':
-      compiler = buildCommonjs
-      break
-
-    case 'umd':
-      compiler = buildUMD
-      break
-
-    default:
-      break
-  }
-
-  if (!compiler) {
-    throw new Error('module must be one of es module | commonjs | umd')
-  }
-
-  compiler(config)
-}

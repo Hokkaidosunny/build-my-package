@@ -8,10 +8,14 @@ const ctx = process.cwd()
 function buildCommonjs(cusConfig: CusConfig) {
   const outputPath = cusConfig.outputPath || path.join(ctx, './es')
 
-  buildModule({
-    outputPath,
-    commonjs: false,
-    ...cusConfig
+  return new Promise((resolve, reject) => {
+    buildModule({
+      outputPath,
+      commonjs: false,
+      ...cusConfig
+    })
+      .on('error', reject)
+      .on('end', resolve)
   })
 }
 

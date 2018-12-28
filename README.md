@@ -22,15 +22,6 @@ buildUMD({
 buildCommonjs({
   entry: path.join(__dirname, './src')
 })
-
-// or
-const bmp = require('build-my-package')
-
-bmp({
-  entry: path.join(__dirname, './src/onEnter.js'),
-  filename: 'onEnter.js',
-  module: 'umd'
-})
 ```
 
 ## Options

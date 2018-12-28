@@ -1,18 +1,28 @@
 import chokidar from 'chokidar'
 import { CusConfig } from '..'
+import ora from 'ora'
+import _ from 'lodash'
 
 function withWatch(fn: any) {
-  return function(config: CusConfig) {
+  async function build(config: CusConfig) {
     const { watch, entry } = config
 
     if (watch) {
-      chokidar.watch(entry).on('all', () => {
-        fn(config)
-      })
+      const listener = _.debounce(async () => {
+        const spinner = ora().start('start build')
+        await fn(config)
+        spinner.succeed('build success')
+      }, 500)
+
+      chokidar.watch(entry).on('all', listener)
     } else {
-      fn(config)
+      const spinner = ora().start('start build')
+      await fn(config)
+      spinner.succeed('build success')
     }
   }
+
+  return build
 }
 
 export default withWatch
