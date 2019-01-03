@@ -695,6 +695,11 @@
   resolved "https://registry.yarnpkg.com/@types/events/-/events-1.2.0.tgz#81a6731ce4df43619e5c8c945383b3e62a89ea86"
   integrity sha512-KEIlhXnIutzKwRbQkGWb/I4HFqBuUykAdHgDED6xqwXJfONCjF5VoE0cXEiurh3XauygxzeDzgtXUqvLkxFzzA==
 
+"@types/getopts@^2.0.0":
+  version "2.0.0"
+  resolved "http://registry.npm.taobao.org/@types/getopts/download/@types/getopts-2.0.0.tgz#8a603370cb367d3192bd8012ad39ab2320b5b476"
+  integrity sha1-imAzcMs2fTGSvYASrTmrIyC1tHY=
+
 "@types/glob-stream@*":
   version "6.1.0"
   resolved "https://registry.yarnpkg.com/@types/glob-stream/-/glob-stream-6.1.0.tgz#7ede8a33e59140534f8d8adfb8ac9edfb31897bc"

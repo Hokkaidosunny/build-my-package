@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@types/chokidar": "^1.7.5",
+    "@types/getopts": "^2.0.0",
     "@types/gulp": "^4.0.5",
     "@types/gulp-babel": "^6.1.29",
     "@types/gulp-typescript": "^2.13.0",
