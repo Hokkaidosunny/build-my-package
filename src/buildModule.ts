@@ -7,35 +7,15 @@ import tsc from 'gulp-typescript'
 import { CusConfig } from '.'
 import _ from 'lodash'
 import ora from 'ora'
-import chokidar from 'chokidar'
 
 interface Option extends CusConfig {
   commonjs: boolean
 }
 
 async function buildModule(option: Option) {
-  const { watch, entry } = option
-
-  if (watch) {
-    const listener = _.debounce(async path => {
-      console.log(path + ' has changed')
-
-      const spinner = ora().start('start build')
-      await compile(option)
-      spinner.succeed('build success')
-    }, 500)
-
-    chokidar
-      .watch(entry)
-      .on('ready', listener)
-      .on('change', listener)
-      .on('addDir', listener)
-      .on('add', listener)
-  } else {
-    const spinner = ora().start('start build')
-    await compile(option)
-    spinner.succeed('build success')
-  }
+  const spinner = ora().start('start build')
+  await compile(option)
+  spinner.succeed('build success')
 }
 
 function compile(option: Option) {
@@ -55,10 +35,15 @@ function compile(option: Option) {
 
 // build ts
 function buildTS(option: Option) {
-  const { entry, outputPath, commonjs, tsconfig } = option
+  const { entry, outputPath, commonjs, tsconfig, exclude } = option
 
   const tsConfig = createTSConfig({ commonjs, tsconfig })
-  const src = path.join(entry, '**/*.{ts,tsx}')
+
+  let src = [path.join(entry, '**/*.{ts,tsx}')]
+
+  if (exclude) {
+    src = src.concat(exclude.map(e => '!' + e))
+  }
 
   return gulp
     .src(src)
@@ -68,14 +53,18 @@ function buildTS(option: Option) {
 
 // build js
 function buildJS(option: Option) {
-  const { entry, outputPath, commonjs } = option
+  const { entry, outputPath, commonjs, exclude } = option
 
-  const babelrc = createBabelConfig({ commonjs, runtime: true }) as any
-  const src = path.join(entry, '**/*.{js,jsx}')
+  const babelConfig = createBabelConfig({ commonjs, runtime: true }) as any
+  let src = [path.join(entry, '**/*.{js,jsx}')]
+
+  if (exclude) {
+    src = src.concat(exclude.map(e => '!' + e))
+  }
 
   return gulp
     .src(src)
-    .pipe(babel(babelrc))
+    .pipe(babel(babelConfig))
     .pipe(gulp.dest(outputPath as string))
 }
 

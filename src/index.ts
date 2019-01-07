@@ -6,6 +6,7 @@ import { ExternalsElement } from 'webpack'
 
 export interface CusConfig {
   entry: string
+  exclude?: string[]
   outputPath?: string
   filename?: string
   mode: 'development' | 'production' | 'none' | undefined
