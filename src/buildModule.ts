@@ -12,60 +12,63 @@ interface Option extends CusConfig {
   commonjs: boolean
 }
 
-async function buildModule(option: Option) {
-  const spinner = ora().start('start build')
-  await compile(option)
-  spinner.succeed('build success')
-}
+/**
+ * build by language
+ * @param option
+ * @param src gulp src
+ * @param compiler gulp-babel \ gulp-typscrilpt
+ */
+function build(option: Option) {
+  const {
+    outputPath,
+    exclude,
+    watch,
+    language,
+    entry,
+    commonjs,
+    tsconfig
+  } = option
 
-function compile(option: Option) {
-  const { language } = option
+  const isTypescript = language === 'typescript'
 
-  let res: any
-  if (language === 'typescript') {
-    res = buildTS(option)
-  } else {
-    res = buildJS(option)
-  }
-
-  return new Promise((resolve, reject) => {
-    res.on('error', reject).on('end', resolve)
-  })
-}
-
-// build ts
-function buildTS(option: Option) {
-  const { entry, outputPath, commonjs, tsconfig, exclude } = option
-
-  const tsConfig = createTSConfig({ commonjs, tsconfig })
-
-  let src = [path.join(entry, '**/*.{ts,tsx}')]
+  // gulp src
+  let src = isTypescript
+    ? [path.join(entry, '**/*.{ts,tsx}')]
+    : [path.join(entry, '**/*.{js,jsx}')]
 
   if (exclude) {
     src = src.concat(exclude.map(e => '!' + e))
   }
 
-  return gulp
-    .src(src)
-    .pipe(tsc(tsConfig))
-    .pipe(gulp.dest(outputPath as string))
-}
+  // compiler
+  const compiler = language === 'typescript' ? tsc : babel
 
-// build js
-function buildJS(option: Option) {
-  const { entry, outputPath, commonjs, exclude } = option
+  // compile config
+  const config = isTypescript
+    ? createTSConfig({ commonjs, tsconfig })
+    : createBabelConfig({ commonjs, runtime: true })
 
-  const babelConfig = createBabelConfig({ commonjs, runtime: true }) as any
-  let src = [path.join(entry, '**/*.{js,jsx}')]
+  // task
+  async function complileTask() {
+    const spin = ora().start('start build')
 
-  if (exclude) {
-    src = src.concat(exclude.map(e => '!' + e))
+    await new Promise((resolve, reject) => {
+      gulp
+        .src(src)
+        .pipe(compiler(config))
+        .pipe(gulp.dest(outputPath as string))
+        .on('error', reject)
+        .on('end', resolve)
+    })
+
+    spin.succeed('build success')
   }
 
-  return gulp
-    .src(src)
-    .pipe(babel(babelConfig))
-    .pipe(gulp.dest(outputPath as string))
+  complileTask()
+
+  if (watch) {
+    gulp.watch(src, complileTask)
+  }
 }
 
-export default buildModule
+export default build

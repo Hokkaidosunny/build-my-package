@@ -42,6 +42,11 @@ buildCommonjs({
 
 - absolute path of entry file/dir
 
+### exclude?
+
+- exclude files in entry
+- e.g. `['src/**/template/**/*']`
+
 ### module?
 
 - 'es module' | 'commonjs' | 'umd'
