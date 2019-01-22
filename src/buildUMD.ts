@@ -5,6 +5,7 @@ import nodeExternals from 'webpack-node-externals'
 import createBabelConfig from './config/createBabelConfig'
 import createTSConfig from './config/createTSConfig'
 import { CusConfig } from '.'
+import { getRuntime } from './util'
 
 const ctx = process.cwd()
 
@@ -45,7 +46,8 @@ function getWebpackConfig(cusConfig: CusConfig): Configuration {
     library,
     tsconfig,
     externals,
-    watch
+    watch,
+    runtime
   } = cusConfig
 
   const outputPath = cusConfig.outputPath || path.join(ctx, './dist')
@@ -56,7 +58,8 @@ function getWebpackConfig(cusConfig: CusConfig): Configuration {
   // create ts config
   const tsCompilerOptions = createTSConfig({
     commonjs: true,
-    tsconfig
+    tsconfig,
+    runtime: getRuntime(runtime)
   })
 
   const config: Configuration = {

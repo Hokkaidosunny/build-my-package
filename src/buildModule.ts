@@ -7,6 +7,7 @@ import tsc from 'gulp-typescript'
 import { CusConfig } from '.'
 import _ from 'lodash'
 import ora from 'ora'
+import { getRuntime } from './util'
 
 interface Option extends CusConfig {
   commonjs: boolean
@@ -26,7 +27,8 @@ function build(option: Option) {
     language,
     entry,
     commonjs,
-    tsconfig
+    tsconfig,
+    runtime
   } = option
 
   const isTypescript = language === 'typescript'
@@ -43,10 +45,12 @@ function build(option: Option) {
   // compiler
   const compiler = language === 'typescript' ? tsc : babel
 
+  const _runtime = getRuntime(runtime)
+
   // compile config
   const config = isTypescript
-    ? createTSConfig({ commonjs, tsconfig })
-    : createBabelConfig({ commonjs, runtime: true })
+    ? createTSConfig({ commonjs, tsconfig, runtime: _runtime })
+    : createBabelConfig({ commonjs, runtime: _runtime })
 
   // task
   async function complileTask() {
@@ -55,9 +59,13 @@ function build(option: Option) {
     await new Promise((resolve, reject) => {
       gulp
         .src(src)
-        .pipe(compiler(config))
+        .pipe(
+          compiler(config).on('error', error => {
+            spin.fail('build fail')
+            reject(error)
+          })
+        )
         .pipe(gulp.dest(outputPath as string))
-        .on('error', reject)
         .on('end', resolve)
     })
 

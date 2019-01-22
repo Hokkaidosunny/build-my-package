@@ -92,13 +92,7 @@ buildCommonjs({
 - default false
 - webpack watch
 
-## Roadmap
+### runtime?
 
-- [x] support cjs
-- [x] support es module
-- [x] support umd
-- [x] support ts
-- [x] custom ts config
-- [x] support watch
-- [x] support cli
-- [ ] custom babel config
+- default false
+- babel runtime config

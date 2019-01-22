@@ -16,6 +16,7 @@ export interface CusConfig {
   externals?: ExternalsElement | ExternalsElement[]
   watch?: boolean
   module?: 'es module' | 'commonjs' | 'umd'
+  runtime?: boolean
 }
 
 export { buildCommonjs, buildES, buildUMD }
