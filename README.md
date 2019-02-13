@@ -1,5 +1,7 @@
 # build-my-package
 
+[![Build Status](https://travis-ci.org/Hokkaidosunny/build-my-package.svg?branch=master)](https://travis-ci.org/Hokkaidosunny/build-my-package)
+
 Help you to build 3 types(UMD, Commonjs, ES Module) of module, support js and ts.
 
 ## Install

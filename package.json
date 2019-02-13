@@ -4,8 +4,9 @@
   "description": "build package tool",
   "main": "lib/index.js",
   "scripts": {
-    "build": "rm -rf lib && tsc -w",
-    "release": "standard-version && npm publish --registry=https://registry.npmjs.org/"
+    "build": "rm -rf lib && tsc",
+    "release": "standard-version && npm publish --registry=https://registry.npmjs.org/",
+    "test": "jest"
   },
   "bin": {
     "bmp": "./lib/bin.js"
@@ -60,6 +61,7 @@
     "@types/ora": "^3.0.0",
     "@types/webpack": "^4.4.19",
     "@types/webpack-node-externals": "^1.6.3",
+    "jest": "^24.1.0",
     "standard-version": "^4.4.0",
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.14.0"
